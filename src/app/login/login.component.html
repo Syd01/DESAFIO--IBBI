@@ -1,0 +1,17 @@
+
+<div class="container">
+  <div class="image-container">
+      <img src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="250">
+  </div>
+  <form [formGroup]="formLogin" (ngSubmit)="logar()">
+  <div class="input-field">
+      <input type="text" pInputText formControlName="login" placeholder="Login"/>
+  </div>
+  <div class="input-field">
+      <input type="password" pInputText formControlName="senha" placeholder="Senha"/>
+  </div>
+  <div class="card flex justify-content-center button-group">
+      <button pButton pRipple label="Entrar" type="submit" class="p-button-success"></button>
+      <button pButton label="Cadastrar"></button>
+  </div>
+</form>

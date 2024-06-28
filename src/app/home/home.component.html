@@ -1,0 +1,47 @@
+<p-tabMenu [model]="items"></p-tabMenu>
+
+<div class="card-container">
+  <p-card *ngFor="let prato of pratos" header="{{prato.nome_prato}}" subheader="{{prato.descricao_prato}}" [style]="{ width: '360px', margin: '1em' }">
+    <ng-template pTemplate="header">
+
+    </ng-template>
+    <p>Valor: R$ {{prato.valor_prato}}</p>
+    <p>({{ convertToUSD(prato.valor_prato) | currency: 'USD':'symbol':'1.2-2' }} USD)</p>
+    <p>Quantidade: {{prato.qtd_prato}}</p>
+      Estoque:({{ getStatus(prato).label }})
+      <p>Status:
+        <span [style.color]="getStatus(prato).color">●</span>
+    </p>
+    <ng-template pTemplate="footer">
+      <p-button (click)="showDialog(prato.idpratos)" icon="pi pi-external-link" label="Comprar"></p-button>
+      <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+       <form [formGroup]="formCompra"(ngSubmit)="compra()">
+        <p class="m-0">
+          <input type="number" pInputText formControlName="quantidade" placeholder="Quantidade" /><br>
+          <button pButton pRipple label="Submit" class="p-button-success" type="submit" [disabled]="!formCompra.valid"></button>
+        </p>
+      </form>
+      </p-dialog>
+    </ng-template>
+  </p-card>
+</div>
+<!-- Diálogo de Criação de Categoria -->
+<p-dialog header="Cadastrar Nova Tipos" [(visible)]="visible_tipos" [modal]="true" [style]="{ 'width': '50vw' }" [draggable]="false" [resizable]="false">
+  <form [formGroup]="formTipos" (ngSubmit)="criarTipos()">
+    <p class="m-0">
+      <input type="text" pInputText formControlName="descricao" placeholder="Descrição" /><br>
+      <button pButton pRipple label="Cadastrar Tipos" class="p-button-success" type="submit" [disabled]="!formTipos.valid"></button>
+    </p>
+  </form>
+</p-dialog>
+<!-- Diálogo de Cadastro de Produtos -->
+<p-dialog header="Cadastro de Novo Pratos" [(visible)]="visible_pratos" [modal]="true" [style]="{'width': '50vw', 'height': '300vw'}" [draggable]="false" [resizable]="false">
+  <form [formGroup]="formPratos" (ngSubmit)="criarPratos()">
+    <input type="text" pInputText formControlName="descprod" placeholder="Descrição" /><br>
+    <input type="text" pInputText formControlName="qtd" placeholder="Quantidade" /><br>
+    <input type="text" pInputText formControlName="valor" placeholder="Valor" /><br>
+    <p-multiSelect [options]="listaTipos" [(ngModel)]="selectedTipos" formControlName="categoria" optionLabel="descricao" defaultLabel="Selecione um Tipo"></p-multiSelect>
+    <input type="file" formControlName="imagem">
+    <button type="submit" pButton label="Salvar"></button>
+  </form>
+</p-dialog>
